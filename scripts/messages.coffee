@@ -1,6 +1,7 @@
 # Description:
 #   Basic scripts that listen for a prompt and return an associated static message
 
+http = require 'http'
 
 module.exports = (robot) ->
 
@@ -18,3 +19,11 @@ module.exports = (robot) ->
 
   robot.respond /lunch/gim, (res) ->
     res.send " > I want a peanut butter and jelly sandwich for lunch today."
+  
+  robot.respond /quote/gim, (res) ->
+    http.get { host: 'quotesondesign.com', path: '/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1' }, (get_res) ->
+      data = ''
+      get_res.on 'data', (chunk) ->
+          data += chunk.toString()
+      get_res.on 'end', () ->
+          res.send " > " + JSON.parse(data)[0].content.replace(/<(?:.|\n)*?>/gm, '');
