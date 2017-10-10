@@ -2,6 +2,7 @@
 #   Basic scripts that listen for a prompt and return an associated static message
 
 http = require 'http'
+decode = require 'unescape';
 
 module.exports = (robot) ->
 
@@ -26,4 +27,4 @@ module.exports = (robot) ->
       get_res.on 'data', (chunk) ->
           data += chunk.toString()
       get_res.on 'end', () ->
-          res.send " > " + JSON.parse(data)[0].content.replace(/<(?:.|\n)*?>/gm, '');
+          res.send " > " + decode(JSON.parse(data)[0].content, 'all').replace(/<(?:.|\n)*?>/gm, '');
