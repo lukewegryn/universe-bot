@@ -21,7 +21,7 @@ module.exports = (robot) ->
     res.send " > I want a peanut butter and jelly sandwich for lunch today."
   
   robot.respond /quote/gim, (res) ->
-    http.get { host: 'quotesondesign.com', path: '/wp-json/posts' }, (get_res) ->
+    http.get { host: 'quotesondesign.com', path: '/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1' }, (get_res) ->
       data = ''
       get_res.on 'data', (chunk) ->
           data += chunk.toString()
